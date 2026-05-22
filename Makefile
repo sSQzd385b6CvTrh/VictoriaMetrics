@@ -59,6 +59,10 @@ fmt:
 vet:
 	$(GO) vet ./...
 
+## check: Run fmt, vet, and lint together (useful before committing)
+.PHONY: check
+check: fmt vet lint
+
 ## docker-build: Build Docker image
 .PHONY: docker-build
 docker-build:
