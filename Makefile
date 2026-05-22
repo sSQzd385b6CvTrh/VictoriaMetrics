@@ -11,7 +11,8 @@ GOFLAGS ?= -trimpath
 LDFLAGS := -X 'github.com/VictoriaMetrics/VictoriaMetrics/lib/buildinfo.Version=$(VERSION)' \
            -X 'github.com/VictoriaMetrics/VictoriaMetrics/lib/buildinfo.BuildTime=$(BUILD_TIME)'
 
-DOCKER_IMAGE ?= victoriametrics/victoria-metrics
+# Personal fork: using a local registry prefix for docker images
+DOCKER_IMAGE ?= localhost:5000/victoria-metrics
 DOCKER_TAG ?= $(VERSION)
 
 .PHONY: all
