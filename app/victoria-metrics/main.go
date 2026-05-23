@@ -41,6 +41,7 @@ func main() {
 	fmt.Printf("Starting VictoriaMetrics at %s\n", *httpListenAddr)
 	fmt.Printf("Storage data path: %s\n", *storageDataPath)
 	fmt.Printf("Retention period: %d months\n", *retentionPeriod)
+	fmt.Printf("Max insert request size: %d bytes\n", *maxInsertRequestSize)
 
 	// Ensure storage directory exists.
 	if err := os.MkdirAll(*storageDataPath, 0755); err != nil {
@@ -89,10 +90,4 @@ func newRouter() fasthttp.RequestHandler {
 		case "/health":
 			handleHealth(ctx)
 		default:
-			ctx.Error(fmt.Sprintf("unsupported path: %s", path), http.StatusNotFound)
-		}
-	}
-}
-
-// handleHealth responds to health check requests.
-func handleHealth
+			ctx.Er
