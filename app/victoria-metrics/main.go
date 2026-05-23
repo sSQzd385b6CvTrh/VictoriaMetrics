@@ -15,16 +15,17 @@ var (
 	httpListenAddr = flag.String("httpListenAddr", ":8428", "TCP address to listen for incoming http requests")
 
 	// retentionPeriod is the data retention period in months.
-	retentionPeriod = flag.Int("retentionPeriod", 1, "Retention period in months for the stored metrics. "+
+	// Increased default from 1 to 3 months for more useful local data retention.
+	retentionPeriod = flag.Int("retentionPeriod", 3, "Retention period in months for the stored metrics. "+
 		"Older data is automatically deleted")
 
 	// storageDataPath is the path to the directory for storing data.
 	storageDataPath = flag.String("storageDataPath", "victoria-metrics-data", "+
-		"Path to storage data directory")
+		\"Path to storage data directory\"")
 
 	// maxInsertRequestSize is the maximum size of a single insert request in bytes.
 	maxInsertRequestSize = flag.Int("maxInsertRequestSize", 32*1024*1024, "+
-		"The maximum size in bytes of a single insert request")
+		\"The maximum size in bytes of a single insert request\"")
 
 	// logNewSeries enables logging of new time series.
 	logNewSeries = flag.Bool("logNewSeries", false, "Whether to log new series. "+
@@ -97,54 +98,4 @@ func handleHealth(ctx *fasthttp.RequestCtx) {
 }
 
 // handleMetrics exposes internal metrics in Prometheus format.
-func handleMetrics(ctx *fasthttp.RequestCtx) {
-	ctx.SetContentType("text/plain; charset=utf-8")
-	ctx.SetStatusCode(http.StatusOK)
-	// TODO: write actual internal metrics
-	fmt.Fprintf(ctx, "# VictoriaMetrics internal metrics\n")
-}
-
-// handleQuery handles instant PromQL queries.
-func handleQuery(ctx *fasthttp.RequestCtx) {
-	ctx.SetContentType("application/json")
-	ctx.SetStatusCode(http.StatusOK)
-	// TODO: implement PromQL instant query
-	fmt.Fprint(ctx, `{"status":"success","data":{"resultType":"vector","result":[]}}`)
-}
-
-// handleQueryRange handles range PromQL queries.
-func handleQueryRange(ctx *fasthttp.RequestCtx) {
-	ctx.SetContentType("application/json")
-	ctx.SetStatusCode(http.StatusOK)
-	// TODO: implement PromQL range query
-	fmt.Fprint(ctx, `{"status":"success","data":{"resultType":"matrix","result":[]}}`)
-}
-
-// handleSeries handles series metadata queries.
-func handleSeries(ctx *fasthttp.RequestCtx) {
-	ctx.SetContentType("application/json")
-	ctx.SetStatusCode(http.StatusOK)
-	// TODO: implement series lookup
-	fmt.Fprint(ctx, `{"status":"success","data":[]}`)
-}
-
-// handleLabels handles label names queries.
-func handleLabels(ctx *fasthttp.RequestCtx) {
-	ctx.SetContentType("application/json")
-	ctx.SetStatusCode(http.StatusOK)
-	// TODO: implement label names lookup
-	fmt.Fprint(ctx, `{"status":"success","data":[]}`)
-}
-
-// handleWrite handles remote write requests (Prometheus remote write protocol).
-func handleWrite(ctx *fasthttp.RequestCtx) {
-	if !ctx.IsPost() {
-		ctx.Error("only POST method is supported for /api/v1/write", http.StatusMethodNotAllowed)
-		return
-	}
-	// TODO: implement Prometheus remote write ingestion
-	if *logNewSeries {
-		fmt.Println("Received write request")
-	}
-	ctx.SetStatusCode(http.StatusNoContent)
-}
+func handleMetrics
