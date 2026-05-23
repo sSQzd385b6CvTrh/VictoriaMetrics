@@ -101,11 +101,13 @@ test-verbose:
 	$(GO) test ./... -count=1 -race -timeout 120s -v
 
 ## test-cover: Run tests with coverage report (personal addition for tracking coverage)
+# Note: open coverage.html in a browser to explore uncovered lines interactively
 .PHONY: test-cover
 test-cover:
 	$(GO) test ./... -count=1 -race -timeout 120s -coverprofile=coverage.out
 	$(GO) tool cover -html=coverage.out -o coverage.html
 	@echo "Coverage report written to coverage.html"
+	@$(GO) tool cover -func=coverage.out | tail -1
 
 ## help: Display this help message
 .PHONY: help
