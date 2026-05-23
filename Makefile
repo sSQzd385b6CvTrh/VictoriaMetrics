@@ -110,14 +110,11 @@ test-cover:
 	@$(GO) tool cover -func=coverage.out | tail -1
 
 ## cover-open: Generate coverage report and open it in the default browser
-# Personal convenience target — saves having to manually open the file each time
+# Personal convenience target — detect OS and use the appropriate open command
 .PHONY: cover-open
 cover-open: test-cover
-	xdg-open coverage.html 2>/dev/null || open coverage.html 2>/dev/null || echo "Open coverage.html manually in your browser"
-
-## help: Display this help message
-.PHONY: help
-help:
-	@echo "Usage: make [target]"
-	@echo ""
-	@echo "Targets:"
+	@if [ "$(shell uname)" = "Darwin" ]; then \
+		open coverage.html; \
+	else \
+		xdg-open coverage.html; \
+	fi
