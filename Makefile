@@ -95,6 +95,11 @@ mod-download:
 mod-verify:
 	$(GO) mod verify
 
+## test-verbose: Run unit tests with verbose output (handy for debugging)
+.PHONY: test-verbose
+test-verbose:
+	$(GO) test ./... -count=1 -race -timeout 120s -v
+
 ## help: Display this help message
 .PHONY: help
 help:
