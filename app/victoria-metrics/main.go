@@ -52,11 +52,13 @@ func main() {
 	router := newRouter()
 
 	// Start HTTP server.
+	// Increased read/write timeouts from 60s to 120s to avoid timeouts on
+	// slow queries over large time ranges in my local Grafana dashboards.
 	srv := &fasthttp.Server{
 		Handler:            router,
 		Name:               "VictoriaMetrics",
-		ReadTimeout:        60 * time.Second,
-		WriteTimeout:       60 * time.Second,
+		ReadTimeout:        120 * time.Second,
+		WriteTimeout:       120 * time.Second,
 		MaxRequestBodySize: *maxInsertRequestSize,
 	}
 
@@ -93,6 +95,4 @@ func newRouter() fasthttp.RequestHandler {
 }
 
 // handleHealth responds to health check requests.
-func handleHealth(ctx *fasthttp.RequestCtx) {
-	ctx.SetStatusCode(http.StatusOK)
-	fmt.Fprint(ctx, "OK")
+func handleHealth
