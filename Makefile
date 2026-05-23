@@ -118,5 +118,5 @@ cover-open: test-cover
 	elif [ "$(shell uname)" = "Linux" ]; then \
 		xdg-open coverage.html; \
 	else \
-		echo "Please open coverage.html manually in your browser"; \
+		echo "Open coverage.html manually in your browser"; \
 	fi
