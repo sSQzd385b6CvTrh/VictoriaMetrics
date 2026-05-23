@@ -1,0 +1,100 @@
+package config
+
+import (
+	"flag"
+	"time"
+)
+
+// Config holds the configuration for the VictoriaMetrics server.
+type Config struct {
+	// HTTP server settings
+	HTTPListenAddr string
+	HTTPReadTimeout  time.Duration
+	HTTPWriteTimeout time.Duration
+
+	// Storage settings
+	StoragePath     string
+	RetentionPeriod time.Duration
+	MaxDiskUsage    int64
+
+	// Ingestion settings
+	MaxInsertRequestSize int64
+	MaxLabelsPerTimeseries int
+
+	// Query settings
+	MaxConcurrentQueries int
+	QueryTimeout         time.Duration
+	MaxQueryDuration     time.Duration
+
+	// Cluster settings
+	ReplicationFactor int
+}
+
+var (
+	httpListenAddr = flag.String(
+		"httpListenAddr",
+		":8428",
+		"TCP address to listen for HTTP connections. See also -httpListenAddr.useProxyProtocol",
+	)
+
+	storagePath = flag.String(
+		"storageDataPath",
+		"victoria-metrics-data",
+		"Path to storage data directory",
+	)
+
+	retentionPeriod = flag.Duration(
+		"retentionPeriod",
+		30*24*time.Hour,
+		"Data retention period. Older data is automatically deleted. Supported suffixes: h (hour), d (day), w (week), y (year)",
+	)
+
+	maxInsertRequestSize = flag.Int64(
+		"maxInsertRequestSize",
+		32*1024*1024, // 32 MB
+		"The maximum size in bytes of a single Prometheus remote_write API request",
+	)
+
+	maxLabelsPerTimeseries = flag.Int(
+		"maxLabelsPerTimeseries",
+		30,
+		"The maximum number of labels accepted per time series. Superfluous labels are dropped",
+	)
+
+	maxConcurrentQueries = flag.Int(
+		"search.maxConcurrentRequests",
+		8,
+		"The maximum number of concurrent search requests",
+	)
+
+	queryTimeout = flag.Duration(
+		"search.queryTimeout",
+		30*time.Second,
+		"Timeout for query execution",
+	)
+
+	maxDiskUsage = flag.Int64(
+		"storage.maxDiskUsageBytes",
+		0,
+		"The maximum disk space usage for storage. Zero means no limit",
+	)
+)
+
+// Load parses command-line flags and returns a populated Config.
+// Must be called after flag.Parse().
+func Load() *Config {
+	return &Config{
+		HTTPListenAddr:         *httpListenAddr,
+		HTTPReadTimeout:        60 * time.Second,
+		HTTPWriteTimeout:       60 * time.Second,
+		StoragePath:            *storagePath,
+		RetentionPeriod:        *retentionPeriod,
+		MaxDiskUsage:           *maxDiskUsage,
+		MaxInsertRequestSize:   *maxInsertRequestSize,
+		MaxLabelsPerTimeseries: *maxLabelsPerTimeseries,
+		MaxConcurrentQueries:   *maxConcurrentQueries,
+		QueryTimeout:           *queryTimeout,
+		MaxQueryDuration:       *queryTimeout,
+		ReplicationFactor:      1,
+	}
+}
