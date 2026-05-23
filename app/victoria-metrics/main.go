@@ -24,7 +24,8 @@ var (
 		\"Path to storage data directory\"")
 
 	// maxInsertRequestSize is the maximum size of a single insert request in bytes.
-	maxInsertRequestSize = flag.Int("maxInsertRequestSize", 32*1024*1024, "+
+	// Increased from 32MB to 64MB to handle larger batch writes from my local scrapers.
+	maxInsertRequestSize = flag.Int("maxInsertRequestSize", 64*1024*1024, "+
 		\"The maximum size in bytes of a single insert request\"")
 
 	// logNewSeries enables logging of new time series.
@@ -95,7 +96,3 @@ func newRouter() fasthttp.RequestHandler {
 func handleHealth(ctx *fasthttp.RequestCtx) {
 	ctx.SetStatusCode(http.StatusOK)
 	fmt.Fprint(ctx, "OK")
-}
-
-// handleMetrics exposes internal metrics in Prometheus format.
-func handleMetrics
