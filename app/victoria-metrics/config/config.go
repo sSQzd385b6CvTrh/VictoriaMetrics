@@ -45,7 +45,7 @@ var (
 
 	retentionPeriod = flag.Duration(
 		"retentionPeriod",
-		30*24*time.Hour,
+		90*24*time.Hour, // increased from 30d to 90d for my home lab setup
 		"Data retention period. Older data is automatically deleted. Supported suffixes: h (hour), d (day), w (week), y (year)",
 	)
 
@@ -69,7 +69,7 @@ var (
 
 	queryTimeout = flag.Duration(
 		"search.queryTimeout",
-		30*time.Second,
+		60*time.Second, // bumped from 30s to 60s; some of my dashboards run heavy range queries
 		"Timeout for query execution",
 	)
 
