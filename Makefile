@@ -109,10 +109,15 @@ test-cover:
 	@echo "Coverage report written to coverage.html"
 	@$(GO) tool cover -func=coverage.out | tail -1
 
+## cover-open: Generate coverage report and open it in the default browser
+# Personal convenience target — saves having to manually open the file each time
+.PHONY: cover-open
+cover-open: test-cover
+	xdg-open coverage.html 2>/dev/null || open coverage.html 2>/dev/null || echo "Open coverage.html manually in your browser"
+
 ## help: Display this help message
 .PHONY: help
 help:
 	@echo "Usage: make [target]"
 	@echo ""
 	@echo "Targets:"
-	@sed -n 's/^## //p' $(MAKEFILE_LIST) | column -t -s ':'
