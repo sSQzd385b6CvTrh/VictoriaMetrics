@@ -51,7 +51,7 @@ var (
 
 	maxInsertRequestSize = flag.Int64(
 		"maxInsertRequestSize",
-		32*1024*1024, // 32 MB
+		64*1024*1024, // bumped from 32 MB to 64 MB; ingesting high-cardinality batches from my IoT sensors
 		"The maximum size in bytes of a single Prometheus remote_write API request",
 	)
 
