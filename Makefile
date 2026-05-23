@@ -110,7 +110,7 @@ test-cover:
 	@$(GO) tool cover -func=coverage.out | tail -1
 
 ## cover-open: Generate coverage report and open it in the default browser
-# Personal convenience target — detects OS to pick the right open command
+# Personal convenience target — detects OS to use the right open command
 .PHONY: cover-open
 cover-open: test-cover
 	@if [ "$(shell uname)" = "Darwin" ]; then \
