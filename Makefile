@@ -110,11 +110,13 @@ test-cover:
 	@$(GO) tool cover -func=coverage.out | tail -1
 
 ## cover-open: Generate coverage report and open it in the default browser
-# Personal convenience target — detect OS and use the appropriate open command
+# Personal convenience target — detects OS to pick the right open command
 .PHONY: cover-open
 cover-open: test-cover
-	@if [ "$(shell uname)" = "Darwin" ]; then \
+	@if [ "$$(uname)" = "Darwin" ]; then \
 		open coverage.html; \
-	else \
+	elif [ "$$(uname)" = "Linux" ]; then \
 		xdg-open coverage.html; \
+	else \
+		echo "Please open coverage.html manually in your browser"; \
 	fi
